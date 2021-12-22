@@ -5,36 +5,28 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
-st.title("NBA Player Stats Explorer")
+st.title("NFL Football Stats (Rushing) Explorer")
 
 st.markdown(
     """
-This app performs simple webscraping of NBA player stats data!
-* **Python libraries:** base64, pandas, streamlit
-* **Data source:** [Basketball-reference.com](https://www.basketball-reference.com/).
+This app performs simple webscraping of NFL Football player stats data (focusing on Rushing)!
+* **Python libraries:** base64, pandas, streamlit, numpy, matplotlib, seaborn
+* **Data source:** [pro-football-reference.com](https://www.pro-football-reference.com/).
 """
 )
 
 st.sidebar.header("User Input Features")
-selected_year = st.sidebar.selectbox("Year", list(reversed(range(1950, 2022))))
+selected_year = st.sidebar.selectbox("Year", list(reversed(range(1990, 2022))))
 
-
-# Web scraping of NBA player stats
+# Web scraping of NFL player stats
+# https://www.pro-football-reference.com/years/2019/rushing.htm
 @st.cache
 def load_data(year):
-    url = f"https://www.basketball-reference.com/leagues/NBA_{year}_per_game.html"
-    # "https://www.basketball-reference.com/leagues/NBA_2021_per_game.html"
-    html = pd.read_html(url, header=0)
+    url = "https://www.pro-football-reference.com/years/" + str(year) + "/rushing.htm"
+    html = pd.read_html(url, header=1)
     df = html[0]
     raw = df.drop(df[df.Age == "Age"].index)  # Deletes repeating headers in content
-
-    # Set the type of each column to str to address issues like below.
-    # streamlit.errors.StreamlitAPIException: (
-    # "Expected bytes, got a 'int' object", 'Conversion failed for column FG% with type object')
-
-    raw = raw.astype(str)
     raw = raw.fillna(0)
-
     player_stats = raw.drop(["Rk"], axis=1)
     return player_stats
 
@@ -46,7 +38,7 @@ sorted_unique_team = sorted(player_stats.Tm.unique())
 selected_team = st.sidebar.multiselect("Team", sorted_unique_team, sorted_unique_team)
 
 # Sidebar - Position selection
-unique_pos = ["C", "PF", "SF", "PG", "SG"]
+unique_pos = ["RB", "QB", "WR", "FB", "TE"]
 selected_pos = st.sidebar.multiselect("Position", unique_pos, unique_pos)
 
 # Filtering data
@@ -62,20 +54,18 @@ st.write(
     + str(df_selected_team.shape[1])
     + " columns."
 )
-df_selected_team = df_selected_team.astype(str)
 st.dataframe(df_selected_team)
-
 
 # Download NBA player stats data
 # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806
-def file_download(df):
+def filedownload(df):
     csv = df.to_csv(index=False)
     b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
     href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download CSV File</a>'
     return href
 
 
-st.markdown(file_download(df_selected_team), unsafe_allow_html=True)
+st.markdown(filedownload(df_selected_team), unsafe_allow_html=True)
 
 # Heatmap
 if st.button("Intercorrelation Heatmap"):
