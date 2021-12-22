@@ -1,0 +1,5 @@
+streamlit
+yfinance
+
+# install on mac
+watchdog
