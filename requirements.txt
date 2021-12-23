@@ -11,3 +11,5 @@ matplotlib
 seaborn
 bs4
 sklearn
+shap
+
