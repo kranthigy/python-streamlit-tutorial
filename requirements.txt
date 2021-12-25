@@ -13,3 +13,11 @@ bs4
 sklearn
 shap
 
+plotly
+psycopg2-binary
+requests
+tweepy
+numpy
+
+
+

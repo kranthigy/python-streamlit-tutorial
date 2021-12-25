@@ -9,7 +9,15 @@ streamlit run main_stock_price.py
 
 ```
 
+## Gallery
+- https://streamlit.io/gallery?category=featured
+- https://share.streamlit.io/daniellewisdl/streamlit-cheat-sheet/app.py
+
+## Source Code
+- https://github.com/daniellewisDL/streamlit-cheat-sheet/blob/master/app.py
+
 
 ## Reference
-* https://aws.amazon.com/blogs/opensource/using-streamlit-to-build-an-interactive-dashboard-for-data-analysis-on-aws/
+- https://aws.amazon.com/blogs/opensource/using-streamlit-to-build-an-interactive-dashboard-for-data-analysis-on-aws/
+
 
